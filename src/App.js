@@ -1,25 +1,92 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React, { useState } from "react";
+import {
+	Dropdown,
+	FormControl,
+	DropdownButton,
+	SplitButton,
+} from "react-bootstrap";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
+		<a
+			href=""
+			ref={ref}
+			onClick={(e) => {
+				e.preventDefault();
+				onClick(e);
+			}}
+		>
+			{children}
+			&#x25bc;
+		</a>
+	));
+
+	// forwardRef again here!
+	// Dropdown needs access to the DOM of the Menu to measure it
+	const CustomMenu = React.forwardRef(
+		({ children, style, className, "aria-labelledby": labeledBy }, ref) => {
+			const [value, setValue] = useState("");
+
+			return (
+				<div
+					ref={ref}
+					style={style}
+					className={className}
+					aria-labelledby={labeledBy}
+				>
+					<FormControl
+						autoFocus
+						className="mx-3 my-2 w-auto"
+						placeholder="Type to filter..."
+						onChange={(e) => setValue(e.target.value)}
+						value={value}
+					/>
+					<ul className="list-unstyled">
+						{React.Children.toArray(children).filter(
+							(child) =>
+								!value || child.props.children.toLowerCase().startsWith(value),
+						)}
+					</ul>
+				</div>
+			);
+		},
+	);
+	return (
+		<div className="App">
+			<div class="dropdowns">
+				<Dropdown drop="down">
+					<Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
+						Plats
+					</Dropdown.Toggle>
+
+					<Dropdown.Menu
+						as={CustomMenu}
+						style={{ display: "flex", flexDirection: "column" }}
+					>
+						<Dropdown.Item eventKey="1">Frölunda</Dropdown.Item>
+						<Dropdown.Item eventKey="2">Mölndal</Dropdown.Item>
+						<Dropdown.Item eventKey="3" active>
+							Göteborg
+						</Dropdown.Item>
+						<Dropdown.Item eventKey="4">Angered</Dropdown.Item>
+					</Dropdown.Menu>
+				</Dropdown>
+			</div>
+			<div>
+				<Dropdown>
+					<Dropdown.Toggle variant="success" id="dropdown-basic">
+						TV
+					</Dropdown.Toggle>
+
+					<Dropdown.Menu>
+						<Dropdown.Item href="#/action-1">Intern</Dropdown.Item>
+						<Dropdown.Item href="#/action-2">Extern</Dropdown.Item>
+					</Dropdown.Menu>
+				</Dropdown>
+			</div>
+		</div>
+	);
 }
 
 export default App;
