@@ -6,6 +6,7 @@ import {
 	DropdownButton,
 	SplitButton,
 } from "react-bootstrap";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
 	const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (

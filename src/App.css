@@ -2,9 +2,3 @@
   display: flex;
   justify-content: center;
 }
-
-a {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
